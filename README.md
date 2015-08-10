@@ -6,3 +6,5 @@ Run using the following commands:
 npm install
 npm start
 ```
+Go to the **localhost:3000** in your favorite browser.
+Profit!
