@@ -5,6 +5,8 @@ var config = require('./config');
 var log = require('./libs/log')(module);
 
 var app = express();
+
+app.engine('ejs', require('ejs-locals'));
 app.set('port', config.get('port'));
 app.set('views', __dirname + '/templates');
 app.set('view engine', 'ejs');
@@ -23,9 +25,7 @@ app.use(express.cookieParser());
 app.use(app.router);
 
 app.get('/', function (req, res, next) {
-	res.render('index', {
-		body: '<b>Hello World</b>'
-	});
+	res.render('index');
 })
 
 app.use(express.static(path.join(__dirname, 'public')));
