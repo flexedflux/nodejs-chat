@@ -3,6 +3,7 @@ var http = require('http');
 var path = require('path');
 var config = require('./config');
 var log = require('./libs/log')(module);
+var HttpError = require('./error').HttpError;
 
 var app = express();
 
@@ -22,22 +23,13 @@ app.use(express.bodyParser());
 
 app.use(express.cookieParser());
 
+app.use(require('./middleware/sendHttpError'));
+
 app.use(app.router);
 
-app.get('/', function (req, res, next) {
-	res.render('index');
-})
+require('./routes')(app);
 
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(function (err, req, res, next) {
-	if (app.get('env') === 'development') {
-		var errorHandler = express.errorHandler();
-		errorHandler(err, req, res, next);
-	} else {
-		res.send(500, 'Internal Server Error!');
-	}
-});
 
 http
 	.createServer(app)
